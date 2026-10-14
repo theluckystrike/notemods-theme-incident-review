@@ -1,0 +1,7 @@
+{
+  "name": "Incident Review",
+  "author": "U3 Theme Factory",
+  "version": "1.0.0",
+  "minAppVersion": "1.1.0",
+  "description": "A severity-coded operations theme for postmortems, incident reviews, and on-call logs."
+}

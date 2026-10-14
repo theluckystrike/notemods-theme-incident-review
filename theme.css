@@ -1,0 +1,487 @@
+/* ==========================================================================
+   Incident Review — an Obsidian app theme
+   Design system: operations postmortem.
+   A severity colour system (SEV1 red -> SEV4 blue) drives callouts, headings and
+   navigation accents. Dense zebra tables, monospace timestamps, strong task
+   checkboxes, and a high-contrast "on-call" dark mode.
+   Original CSS by U3 Theme Factory. MIT licensed. No remote assets.
+   Requires core variables introduced through Obsidian 1.1 (callout variables).
+   ========================================================================== */
+
+/* ---------- shared tokens (both modes) ---------------------------------- */
+body {
+  --ir-radius: 4px;
+  --ir-radius-sm: 3px;
+
+  --ir-sev1: #e5484d;
+  --ir-sev2: #f5a524;
+  --ir-sev3: #e2c541;
+  --ir-sev4: #4d9fff;
+  --ir-ok: #30a46c;
+
+  --font-text-theme: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+  --font-interface-theme: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+  --font-monospace-theme: ui-monospace, SFMono-Regular, "SF Mono", Menlo,
+    Consolas, "Liberation Mono", monospace;
+
+  --font-text-size: 15.5px;
+  --font-monospace-size: 13px;
+  --line-height-normal: 1.58;
+  --line-height-tight: 1.28;
+
+  --h1-size: 1.8em;
+  --h2-size: 1.34em;
+  --h3-size: 1.14em;
+  --h4-size: 1.02em;
+  --h5-size: 0.94em;
+  --h6-size: 0.87em;
+  --h1-weight: 750;
+  --h2-weight: 700;
+  --h3-weight: 650;
+  --h4-weight: 650;
+  --h5-weight: 650;
+  --h6-weight: 650;
+
+  --bold-weight: 700;
+  --tag-size: 0.76em;
+  --checkbox-size: 1.08em;
+  --checkbox-radius: 3px;
+  --radius-s: var(--ir-radius-sm);
+  --radius-m: var(--ir-radius);
+  --radius-l: 8px;
+
+  --code-size: var(--font-monospace-size);
+  --code-line-height: 1.5;
+  --table-header-weight: 700;
+  --table-text-size: 0.9em;
+  --font-variant-numeric: tabular-nums;
+
+  --link-decoration: none;
+  --link-decoration-hover: underline;
+  --link-decoration-thickness: 1.5px;
+  --link-unresolved-opacity: 0.55;
+  --link-unresolved-decoration-style: dashed;
+
+  --input-hover-border-color: var(--ir-accent);
+  --input-focus-border-color: var(--ir-accent);
+}
+
+/* ---------- dark mode (on-call) ---------------------------------------- */
+.theme-dark {
+  --ir-bg: #14161a;
+  --ir-bg-2: #0e0f12;
+  --ir-bg-3: #1a1d22;
+  --ir-ink: #e3e6ea;
+  --ir-ink-muted: #a2a9b3;
+  --ir-ink-faint: #6d747e;
+  --ir-rule: #2b2f36;
+  --ir-rule-strong: #3a3f48;
+  --ir-accent: #f2a33c;
+  --ir-accent-strong: #ffb855;
+  --ir-link: #6cb6ff;
+  --ir-link-hover: #9ccfff;
+  --ir-code-bg: #101216;
+  --ir-selection: #4a2f10;
+  --ir-highlight: rgba(242, 163, 60, 0.30);
+
+  --background-primary: var(--ir-bg);
+  --background-primary-alt: var(--ir-bg-3);
+  --background-secondary: var(--ir-bg-2);
+  --background-secondary-alt: var(--ir-bg-3);
+  --background-modifier-border: var(--ir-rule);
+  --background-modifier-border-hover: var(--ir-rule-strong);
+  --background-modifier-border-focus: var(--ir-accent);
+  --background-modifier-hover: rgba(255, 255, 255, 0.05);
+  --background-modifier-active-hover: rgba(255, 255, 255, 0.09);
+  --background-modifier-form-field: var(--ir-bg-2);
+  --background-modifier-cover: rgba(6, 7, 9, 0.88);
+
+  --text-normal: var(--ir-ink);
+  --text-muted: var(--ir-ink-muted);
+  --text-faint: var(--ir-ink-faint);
+  --text-on-accent: #241503;
+  --text-accent: var(--ir-accent-strong);
+  --text-accent-hover: var(--ir-link-hover);
+  --text-selection: var(--ir-selection);
+  --text-highlight-bg: var(--ir-highlight);
+
+  --interactive-normal: #1b1e23;
+  --interactive-hover: #23272e;
+  --interactive-accent: var(--ir-accent);
+  --interactive-accent-hover: var(--ir-accent-strong);
+
+  --link-color: var(--ir-link);
+  --link-color-hover: var(--ir-link-hover);
+  --link-external-color: var(--ir-link);
+  --link-external-color-hover: var(--ir-link-hover);
+  --link-unresolved-color: var(--ir-ink-faint);
+
+  --tag-color: var(--ir-accent-strong);
+  --tag-background: rgba(242, 163, 60, 0.14);
+  --tag-background-hover: rgba(242, 163, 60, 0.24);
+  --tag-color-hover: var(--ir-accent-strong);
+
+  --code-background: var(--ir-code-bg);
+  --code-normal: #dbe1e8;
+  --code-comment: #78808b;
+  --code-function: #6cb6ff;
+  --code-important: #ff9d7a;
+  --code-keyword: #d2a8ff;
+  --code-operator: #79c0ff;
+  --code-property: #6cb6ff;
+  --code-punctuation: #78808b;
+  --code-string: #a5e075;
+  --code-tag: #ffa657;
+  --code-value: #d2a8ff;
+
+  --table-border-color: var(--ir-rule);
+  --table-header-background: rgba(242, 163, 60, 0.10);
+  --table-header-background-hover: rgba(242, 163, 60, 0.14);
+  --table-row-background-hover: rgba(255, 255, 255, 0.045);
+  --table-selection: rgba(242, 163, 60, 0.22);
+  --table-selection-border-color: var(--ir-accent);
+
+  --checkbox-border-color: #4a505a;
+  --checkbox-border-color-hover: var(--ir-accent);
+  --checkbox-color: var(--ir-ok);
+  --checkbox-color-hover: #45bd80;
+  --checkbox-marker-color: #06170d;
+  --checklist-done-color: var(--ir-ink-faint);
+
+  --nav-item-color: var(--ir-ink-muted);
+  --nav-item-color-hover: var(--ir-ink);
+  --nav-item-color-active: var(--ir-ink);
+  --nav-item-background-hover: rgba(255, 255, 255, 0.05);
+  --nav-item-background-active: rgba(242, 163, 60, 0.16);
+  --nav-item-color-selected: var(--ir-accent-strong);
+  --nav-indentation-guide-color: #24282f;
+
+  --tab-text-color: var(--ir-ink-muted);
+  --tab-text-color-focused: var(--ir-ink);
+  --tab-text-color-focused-active: var(--ir-ink);
+  --tab-background-active: var(--ir-bg);
+  --tab-outline-color: var(--ir-rule);
+
+  --ribbon-background: var(--ir-bg-2);
+  --titlebar-background: var(--ir-bg-2);
+  --titlebar-background-focused: var(--ir-bg-2);
+  --status-bar-background: var(--ir-bg-2);
+  --status-bar-text-color: var(--ir-ink-muted);
+  --divider-color: var(--ir-rule);
+  --scrollbar-thumb-bg: #2f343c;
+  --scrollbar-active-thumb-bg: #40464f;
+  --modal-background: var(--ir-bg-3);
+  --modal-border-color: var(--ir-rule);
+}
+
+/* ---------- light mode -------------------------------------------------- */
+.theme-light {
+  --ir-bg: #fdfcfb;
+  --ir-bg-2: #f4f1ee;
+  --ir-bg-3: #f8f6f4;
+  --ir-ink: #23262b;
+  --ir-ink-muted: #5b6169;
+  --ir-ink-faint: #868c94;
+  --ir-rule: #e0dbd5;
+  --ir-rule-strong: #c8beb2;
+  --ir-accent: #b4520a;
+  --ir-accent-strong: #963f00;
+  --ir-link: #1a63b8;
+  --ir-link-hover: #124b8a;
+  --ir-code-bg: #f3f0ec;
+  --ir-selection: #ffd9b0;
+  --ir-highlight: rgba(242, 163, 60, 0.35);
+
+  --background-primary: var(--ir-bg);
+  --background-primary-alt: var(--ir-bg-3);
+  --background-secondary: var(--ir-bg-2);
+  --background-secondary-alt: var(--ir-bg-3);
+  --background-modifier-border: var(--ir-rule);
+  --background-modifier-border-hover: var(--ir-rule-strong);
+  --background-modifier-border-focus: var(--ir-accent);
+  --background-modifier-hover: rgba(35, 38, 43, 0.05);
+  --background-modifier-active-hover: rgba(35, 38, 43, 0.09);
+  --background-modifier-form-field: #ffffff;
+  --background-modifier-cover: rgba(70, 65, 60, 0.5);
+
+  --text-normal: var(--ir-ink);
+  --text-muted: var(--ir-ink-muted);
+  --text-faint: var(--ir-ink-faint);
+  --text-on-accent: #ffffff;
+  --text-accent: var(--ir-accent-strong);
+  --text-accent-hover: var(--ir-link-hover);
+  --text-selection: var(--ir-selection);
+  --text-highlight-bg: var(--ir-highlight);
+
+  --interactive-normal: #efece8;
+  --interactive-hover: #e7e3de;
+  --interactive-accent: #b4520a;
+  --interactive-accent-hover: #963f00;
+
+  --link-color: var(--ir-link);
+  --link-color-hover: var(--ir-link-hover);
+  --link-external-color: var(--ir-link);
+  --link-external-color-hover: var(--ir-link-hover);
+  --link-unresolved-color: var(--ir-ink-faint);
+
+  --tag-color: var(--ir-accent-strong);
+  --tag-background: rgba(180, 82, 10, 0.12);
+  --tag-background-hover: rgba(180, 82, 10, 0.20);
+  --tag-color-hover: var(--ir-accent-strong);
+
+  --code-background: var(--ir-code-bg);
+  --code-normal: #2b2f36;
+  --code-comment: #6f7780;
+  --code-function: #1a63b8;
+  --code-important: #b42318;
+  --code-keyword: #8250df;
+  --code-operator: #0550ae;
+  --code-property: #1a63b8;
+  --code-punctuation: #6f7780;
+  --code-string: #0f6b30;
+  --code-tag: #953800;
+  --code-value: #8250df;
+
+  --table-border-color: var(--ir-rule-strong);
+  --table-header-background: rgba(180, 82, 10, 0.09);
+  --table-header-background-hover: rgba(180, 82, 10, 0.13);
+  --table-row-background-hover: rgba(35, 38, 43, 0.04);
+  --table-selection: rgba(180, 82, 10, 0.16);
+  --table-selection-border-color: var(--ir-accent);
+
+  --checkbox-border-color: #b3a89c;
+  --checkbox-border-color-hover: var(--ir-accent);
+  --checkbox-color: #1f8a52;
+  --checkbox-color-hover: #17703f;
+  --checkbox-marker-color: #ffffff;
+  --checklist-done-color: var(--ir-ink-faint);
+
+  --nav-item-color: var(--ir-ink-muted);
+  --nav-item-color-hover: var(--ir-ink);
+  --nav-item-color-active: var(--ir-ink);
+  --nav-item-background-hover: rgba(35, 38, 43, 0.05);
+  --nav-item-background-active: rgba(180, 82, 10, 0.14);
+  --nav-item-color-selected: var(--ir-accent-strong);
+  --nav-indentation-guide-color: #e4dfd8;
+
+  --tab-text-color: var(--ir-ink-muted);
+  --tab-text-color-focused: var(--ir-ink);
+  --tab-text-color-focused-active: var(--ir-ink);
+  --tab-background-active: var(--ir-bg);
+  --tab-outline-color: var(--ir-rule);
+
+  --ribbon-background: var(--ir-bg-2);
+  --titlebar-background: var(--ir-bg-2);
+  --titlebar-background-focused: var(--ir-bg-2);
+  --status-bar-background: var(--ir-bg-2);
+  --status-bar-text-color: var(--ir-ink-muted);
+  --divider-color: var(--ir-rule);
+  --scrollbar-thumb-bg: #ded7cf;
+  --scrollbar-active-thumb-bg: #c8beb2;
+  --modal-background: #ffffff;
+  --modal-border-color: var(--ir-rule);
+}
+
+/* ---------- headings: severity-bar section titles ---------------------- */
+.markdown-rendered h1,
+.markdown-preview-view h1,
+.cm-line.HyperMD-header-1 {
+  border-top: 3px solid var(--ir-accent);
+  padding-top: 0.3em;
+}
+.markdown-rendered h2,
+.markdown-preview-view h2,
+.cm-line.HyperMD-header-2 {
+  border-left: 4px solid var(--ir-accent);
+  padding-left: 0.5em;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.markdown-rendered h3,
+.markdown-preview-view h3,
+.markdown-rendered h4,
+.markdown-preview-view h4 {
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--ir-ink-muted);
+}
+
+/* ---------- links ------------------------------------------------------- */
+.markdown-rendered a.internal-link:hover,
+.markdown-preview-view a.internal-link:hover,
+.markdown-rendered a.external-link:hover,
+.markdown-preview-view a.external-link:hover { text-decoration: underline; text-underline-offset: 2px; }
+
+/* ---------- lists: timeline-friendly ----------------------------------- */
+.markdown-rendered ul,
+.markdown-preview-view ul { padding-inline-start: 1.45em; }
+.markdown-rendered ol,
+.markdown-preview-view ol { padding-inline-start: 1.8em; }
+.markdown-rendered ol > li::marker,
+.markdown-preview-view ol > li::marker {
+  color: var(--ir-accent);
+  font-family: var(--font-monospace-theme);
+  font-weight: 700;
+}
+.markdown-rendered li::marker,
+.markdown-preview-view li::marker { color: var(--ir-accent); }
+.markdown-rendered li,
+.markdown-preview-view li { margin-block: 0.12em; }
+
+/* ---------- tasks: strong on-call checklist ---------------------------- */
+.markdown-rendered .task-list-item,
+.markdown-preview-view .task-list-item { list-style: none; }
+.markdown-rendered input[type="checkbox"],
+.markdown-preview-view input[type="checkbox"],
+.markdown-source-view input[type="checkbox"] { border-radius: 3px; border-width: 2px; }
+.markdown-rendered .task-list-item.is-checked,
+.markdown-preview-view .task-list-item.is-checked { color: var(--checklist-done-color); text-decoration: line-through; }
+
+/* ---------- blockquote: quoted log ------------------------------------- */
+.markdown-rendered blockquote,
+.markdown-preview-view blockquote {
+  border-left: 4px solid var(--ir-rule-strong);
+  border-radius: 0 var(--ir-radius-sm) var(--ir-radius-sm) 0;
+  background: var(--ir-bg-2);
+  padding: 0.4em 0.9em;
+  color: var(--text-muted);
+}
+
+/* ---------- callouts: severity system ---------------------------------- */
+.callout {
+  --callout-radius: var(--ir-radius);
+  --callout-border-width: 1px;
+  --callout-border-opacity: 0.6;
+  --callout-padding: 0.7em 1em;
+  --callout-title-size: 0.88em;
+  --callout-title-weight: 750;
+  --callout-content-padding: 0 0 0.05em 0;
+  --callout-blend-mode: normal;
+  border-left-width: 5px;
+  border-left-color: rgb(var(--callout-color));
+}
+.callout .callout-title { text-transform: uppercase; letter-spacing: 0.05em; }
+.callout[data-callout="note"],
+.callout[data-callout="info"],
+.callout[data-callout="todo"] { --callout-color: 77, 159, 255; }
+.callout[data-callout="abstract"],
+.callout[data-callout="summary"],
+.callout[data-callout="tldr"],
+.callout[data-callout="example"] { --callout-color: 130, 80, 223; }
+.callout[data-callout="tip"],
+.callout[data-callout="hint"] { --callout-color: 48, 164, 108; }
+.callout[data-callout="success"],
+.callout[data-callout="check"],
+.callout[data-callout="done"] { --callout-color: 48, 164, 108; }
+.callout[data-callout="question"],
+.callout[data-callout="help"],
+.callout[data-callout="faq"] { --callout-color: 226, 197, 65; }
+.callout[data-callout="warning"],
+.callout[data-callout="caution"],
+.callout[data-callout="attention"] { --callout-color: 245, 165, 36; }
+.callout[data-callout="important"] { --callout-color: 226, 197, 65; }
+.callout[data-callout="failure"],
+.callout[data-callout="fail"],
+.callout[data-callout="missing"],
+.callout[data-callout="danger"],
+.callout[data-callout="error"],
+.callout[data-callout="bug"] { --callout-color: 229, 72, 77; }
+
+/* ---------- tables: dense zebra ops tables ----------------------------- */
+.markdown-rendered table,
+.markdown-preview-view table {
+  border-collapse: collapse;
+  border: 1px solid var(--ir-rule-strong);
+  font-size: var(--table-text-size);
+  font-variant-numeric: tabular-nums;
+}
+.markdown-rendered th,
+.markdown-preview-view th {
+  border: 1px solid var(--ir-rule-strong);
+  text-align: left;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  font-size: 0.85em;
+}
+.markdown-rendered td,
+.markdown-preview-view td { border: 1px solid var(--ir-rule-strong); }
+.markdown-rendered tbody tr:nth-child(even),
+.markdown-preview-view tbody tr:nth-child(even) { background: var(--ir-bg-2); }
+
+/* ---------- inline & fenced code --------------------------------------- */
+.markdown-rendered code,
+.markdown-preview-view code,
+.cm-inline-code {
+  background: var(--ir-code-bg);
+  border: 1px solid var(--ir-rule);
+  border-radius: var(--ir-radius-sm);
+  padding: 0.08em 0.34em;
+  font-size: 0.88em;
+}
+.markdown-rendered pre,
+.markdown-preview-view pre {
+  background: var(--ir-code-bg);
+  border: 1px solid var(--ir-rule-strong);
+  border-left: 4px solid var(--ir-accent);
+  border-radius: 0 var(--ir-radius-sm) var(--ir-radius-sm) 0;
+  padding: 0.9em 1em;
+  line-height: var(--code-line-height);
+}
+.markdown-rendered pre code,
+.markdown-preview-view pre code { border: none; background: transparent; padding: 0; }
+.markdown-source-view.mod-cm6 .HyperMD-codeblock-bg { background: var(--ir-code-bg); }
+.markdown-source-view.mod-cm6 .cm-line.HyperMD-codeblock { border-left: 4px solid var(--ir-accent); }
+
+/* ---------- timestamps ------------------------------------------------- */
+time, kbd, .metadata-property-value .mod-monospace {
+  font-family: var(--font-monospace-theme);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- horizontal rule -------------------------------------------- */
+.markdown-rendered hr,
+.markdown-preview-view hr { border: none; border-top: 1px solid var(--ir-rule-strong); height: 0; }
+
+/* ---------- tags ------------------------------------------------------- */
+.markdown-rendered a.tag,
+.markdown-preview-view .tag,
+.cm-hashtag {
+  border-radius: var(--ir-radius-sm);
+  padding: 0.05em 0.55em;
+  border: 1px solid rgba(242, 163, 60, 0.4);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+.theme-light .markdown-rendered a.tag,
+.theme-light .markdown-preview-view .tag { border-color: rgba(180, 82, 10, 0.4); }
+
+/* ---------- search ----------------------------------------------------- */
+.search-result-file-matched-text { background: var(--text-highlight-bg); color: var(--text-normal); }
+.search-input-container input { border-radius: var(--ir-radius-sm); }
+
+/* ---------- settings --------------------------------------------------- */
+.vertical-tab-nav-item.is-active { background: var(--interactive-accent); color: var(--text-on-accent); }
+.setting-item { border-top: 1px solid var(--background-modifier-border); }
+.setting-item-name { font-weight: 700; }
+
+/* ---------- tabs ------------------------------------------------------- */
+.workspace-tab-header.is-active { box-shadow: inset 0 -2px 0 var(--ir-accent); }
+
+/* ---------- navigation: severity rail ---------------------------------- */
+.nav-file-title,
+.nav-folder-title { border-radius: var(--ir-radius-sm); }
+.nav-file-title.is-active {
+  font-weight: 700;
+  box-shadow: inset 3px 0 0 var(--ir-accent);
+}
+
+/* ---------- focus ------------------------------------------------------ */
+:focus-visible { outline: 2px solid var(--ir-accent-strong); outline-offset: 2px; }
+input:focus, textarea:focus, select:focus { border-color: var(--ir-accent); box-shadow: 0 0 0 3px var(--ir-highlight); }
+
+/* ---------- reduced motion --------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  * { transition-duration: 0.001ms !important; animation-duration: 0.001ms !important; }
+}
