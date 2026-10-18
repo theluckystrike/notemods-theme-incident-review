@@ -56,7 +56,28 @@ The `--ir-accent` variable controls amber rails and markers.
 The `--ir-bg`, `--ir-ink`, and `--ir-rule-strong` variables control backgrounds, text, and borders.
 Set these variables under `.theme-light` or `.theme-dark` in your snippet.
 Check contrast after a color change.
+This theme uses its own amber accent. The Accent color setting has no effect.
 This theme does not include Style Settings controls.
+
+## Review record
+
+Use these native callouts as a short incident record:
+
+```markdown
+> [!warning] Impact
+> State the user impact and its start time.
+
+> [!info] Timeline
+> Record an event with its time and source.
+
+> [!question] Cause
+> Separate a confirmed cause from an open question.
+
+> [!todo] Follow-up
+> - [ ] Name an owner and a due date.
+```
+
+The labels stay in the note when you change themes.
 
 ## Known limits
 
@@ -64,6 +85,8 @@ This theme does not include Style Settings controls.
 - Long code lines and wide tables can require horizontal scrolling in narrow panes.
 - Severity callouts style existing Obsidian callout types. They do not assign incident severity or add a workflow.
 - The theme uses system fonts. Timestamp widths can differ between operating systems.
+- The native ribbon, tab headers, status bar, and file list were not reached by the Tab trace in Obsidian 1.14.4.
+- The editor shows focus with an ink rail and an amber caret.
 - Custom CSS snippets can override the focus ring or reduce text contrast.
 
 ## License

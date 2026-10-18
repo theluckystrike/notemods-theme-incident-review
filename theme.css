@@ -122,15 +122,15 @@ body {
   --code-background: var(--ir-code-bg);
   --code-normal: #dbe1e8;
   --code-comment: #a2a9b3;
-  --code-function: #6cb6ff;
-  --code-important: #ff9d7a;
-  --code-keyword: #d2a8ff;
-  --code-operator: #79c0ff;
-  --code-property: #6cb6ff;
+  --code-function: #82c7cf;
+  --code-important: #ffb29b;
+  --code-keyword: #f2c078;
+  --code-operator: #c5ced9;
+  --code-property: #82c7cf;
   --code-punctuation: #a2a9b3;
-  --code-string: #a5e075;
-  --code-tag: #ffa657;
-  --code-value: #d2a8ff;
+  --code-string: #a8ceb5;
+  --code-tag: #f2b674;
+  --code-value: #f2c078;
 
   --table-border-color: var(--ir-rule);
   --table-header-background: rgba(242, 163, 60, 0.10);
@@ -232,13 +232,13 @@ body {
   --code-comment: #565f69;
   --code-function: #1a63b8;
   --code-important: #b42318;
-  --code-keyword: #8250df;
-  --code-operator: #0550ae;
+  --code-keyword: #82510d;
+  --code-operator: #525f70;
   --code-property: #1a63b8;
   --code-punctuation: #565f69;
-  --code-string: #0f6b30;
-  --code-tag: #953800;
-  --code-value: #8250df;
+  --code-string: #24634d;
+  --code-tag: #8b4f26;
+  --code-value: #82510d;
 
   --table-border-color: var(--ir-rule-strong);
   --table-header-background: rgba(180, 82, 10, 0.09);
@@ -312,9 +312,9 @@ body {
 
 /* ---------- lists: timeline-friendly ----------------------------------- */
 .markdown-rendered ul,
-.markdown-preview-view ul { padding-inline-start: 1.45em; }
+.markdown-preview-view ul { padding-inline-start: var(--list-indent); }
 .markdown-rendered ol,
-.markdown-preview-view ol { padding-inline-start: 1.8em; }
+.markdown-preview-view ol { padding-inline-start: var(--list-indent); }
 .markdown-rendered ol > li::marker,
 .markdown-preview-view ol > li::marker {
   color: var(--ir-accent);
@@ -388,6 +388,7 @@ body {
 /* ---------- tables: dense zebra ops tables ----------------------------- */
 .markdown-rendered table,
 .markdown-preview-view table {
+  width: 100%;
   border-collapse: collapse;
   border: 1px solid var(--ir-rule-strong);
   font-size: var(--table-text-size);
@@ -616,7 +617,11 @@ body .markdown-source-view.mod-cm6 .cm-hashtag.cm-hashtag-end {
 body .markdown-source-view.mod-cm6.is-live-preview .HyperMD-quote {
   background: var(--ir-bg-2); color: var(--text-muted);
 }
-body .markdown-source-view.mod-cm6.is-live-preview .HyperMD-quote::before { border-inline-start: 4px solid var(--ir-rule-strong); }
+body .markdown-source-view.mod-cm6.is-live-preview .HyperMD-quote {
+  box-shadow: inset 4px 0 0 var(--ir-rule-strong);
+  border-radius: 0;
+}
+body .markdown-source-view.mod-cm6.is-live-preview .HyperMD-quote::before { border-inline-start: none; }
 body .markdown-source-view.mod-cm6 .cm-quote { color: var(--text-muted); }
 body .markdown-source-view.mod-cm6 .cm-line.HyperMD-header-2 {
   padding-top: 0; margin-top: var(--p-spacing); border-left: 0; position: relative;
@@ -626,13 +631,22 @@ body .markdown-source-view.mod-cm6 .cm-line.HyperMD-header-2::before {
   border-inline-start: 4px solid var(--ir-accent);
 }
 body .markdown-source-view.mod-cm6 .HyperMD-codeblock-bg {
-  border-inline-start: 4px solid var(--ir-accent);
+  border-inline-start: none;
   border-inline-end: 1px solid var(--ir-rule-strong);
+  box-shadow: none;
+  border-radius: 0;
+  inset-inline-end: 0;
+}
+body .markdown-source-view.mod-cm6 .HyperMD-codeblock-bg::before {
+  content: ""; position: absolute;
+  inset-inline-start: 0; top: -1px; bottom: -1px; width: 4px;
+  background: var(--ir-accent);
+  pointer-events: none;
 }
 body .markdown-source-view.mod-cm6 .HyperMD-codeblock-begin-bg { border-top: 1px solid var(--ir-rule-strong); }
 body .markdown-source-view.mod-cm6 .HyperMD-codeblock-end-bg { border-bottom: 1px solid var(--ir-rule-strong); }
 body .markdown-source-view.mod-cm6 .HyperMD-codeblock .cm-indent::before { display: none; }
-body .markdown-source-view.mod-cm6 .cm-content span.cm-inline-code:not(.cm-formatting) {
+body .markdown-source-view.mod-cm6 .cm-content span.cm-inline-code:not(.cm-formatting):not(.cm-hmd-indented-code) {
   background: var(--ir-code-bg); color: var(--code-normal);
   border: 1px solid var(--ir-rule); border-radius: var(--ir-radius-sm); padding: 0.05em 0.25em;
 }
@@ -657,10 +671,19 @@ html body:is(.theme-light, .theme-dark) :is(button, a, input, textarea, select, 
   outline: 2px solid var(--text-normal); outline-offset: 2px; box-shadow: none;
 }
 body.theme-light a:focus-visible, body.theme-dark a:focus-visible { outline-offset: 1px; }
-html body:is(.theme-light, .theme-dark) .markdown-source-view :is(.cm-content:focus-visible, .cm-editor.cm-focused) { outline: none; box-shadow: none; }
+/* A focused editor uses a single left rail. It does not frame the document. */
+html body:is(.theme-light, .theme-dark) .markdown-source-view .cm-content:focus-visible {
+  outline: none;
+  box-shadow: none;
+  caret-color: var(--ir-accent-strong);
+}
+html body:is(.theme-light, .theme-dark) .markdown-source-view .cm-editor.cm-focused .cm-scroller {
+  box-shadow: inset 3px 0 0 var(--ir-ink-muted);
+}
 body .clickable-icon[aria-disabled="true"]:focus-visible { opacity: 1; }
 body .clickable-icon[aria-disabled="true"]:focus-visible svg { opacity: 0.4; }
-body .markdown-source-view.mod-cm6 .cm-table-widget .table-wrapper { overflow: visible; }
+body .markdown-source-view.mod-cm6 .cm-table-widget .table-wrapper { overflow: visible; width: 100%; }
+body .markdown-source-view.mod-cm6 .cm-table-widget table { width: 100%; }
 @media (prefers-reduced-motion: reduce) {
   html body:is(.theme-light, .theme-dark) :is(*, *::before, *::after) {
     transition: none; animation-duration: 0s; animation-iteration-count: 1; scroll-behavior: auto;
@@ -677,4 +700,19 @@ body .markdown-source-view.mod-cm6 .cm-content span.cm-formatting-code {
   border: none; padding-inline: 0; background: transparent;
 }
 
-/* Keep Obsidian node-inserted lifecycle events. Zero duration removes visible motion. */
+/* Search matches use an open row and a bold match cue. */
+body .search-result-file-matches { border: none; border-radius: 0; box-shadow: none; }
+body .search-result-file-match {
+  border: none;
+  border-bottom: 1px solid var(--ir-rule);
+  border-radius: 0;
+}
+body .search-result-file-matched-text { font-weight: 750; }
+/* CodeMirror owns line height. Keep framing off its text spans. */
+body .markdown-source-view.mod-cm6 .HyperMD-codeblock .cm-inline-code,
+body .markdown-source-view.mod-cm6 .cm-hmd-indented-code {
+  border: none; border-radius: 0; padding: 0; background: transparent;
+}
+body .markdown-source-view.mod-cm6 .cm-line.HyperMD-header-1 {
+  padding-bottom: 0.3em;
+}
