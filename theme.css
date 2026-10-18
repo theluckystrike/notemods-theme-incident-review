@@ -58,10 +58,10 @@ body {
   --table-text-size: 0.9em;
   --font-variant-numeric: tabular-nums;
 
-  --link-decoration: none;
+  --link-decoration: underline;
   --link-decoration-hover: underline;
   --link-decoration-thickness: 1.5px;
-  --link-unresolved-opacity: 0.55;
+  --link-unresolved-opacity: 1;
   --link-unresolved-decoration-style: dashed;
 
   --input-hover-border-color: var(--ir-accent);
@@ -75,9 +75,9 @@ body {
   --ir-bg-3: #1a1d22;
   --ir-ink: #e3e6ea;
   --ir-ink-muted: #a2a9b3;
-  --ir-ink-faint: #6d747e;
-  --ir-rule: #2b2f36;
-  --ir-rule-strong: #3a3f48;
+  --ir-ink-faint: #a2a9b3;
+  --ir-rule: #747d89;
+  --ir-rule-strong: #858f9c;
   --ir-accent: #f2a33c;
   --ir-accent-strong: #ffb855;
   --ir-link: #6cb6ff;
@@ -125,13 +125,13 @@ body {
 
   --code-background: var(--ir-code-bg);
   --code-normal: #dbe1e8;
-  --code-comment: #78808b;
+  --code-comment: #a2a9b3;
   --code-function: #6cb6ff;
   --code-important: #ff9d7a;
   --code-keyword: #d2a8ff;
   --code-operator: #79c0ff;
   --code-property: #6cb6ff;
-  --code-punctuation: #78808b;
+  --code-punctuation: #a2a9b3;
   --code-string: #a5e075;
   --code-tag: #ffa657;
   --code-value: #d2a8ff;
@@ -143,7 +143,7 @@ body {
   --table-selection: rgba(242, 163, 60, 0.22);
   --table-selection-border-color: var(--ir-accent);
 
-  --checkbox-border-color: #4a505a;
+  --checkbox-border-color: #858f9c;
   --checkbox-border-color-hover: var(--ir-accent);
   --checkbox-color: var(--ir-ok);
   --checkbox-color-hover: #45bd80;
@@ -183,9 +183,9 @@ body {
   --ir-bg-3: #f8f6f4;
   --ir-ink: #23262b;
   --ir-ink-muted: #5b6169;
-  --ir-ink-faint: #868c94;
-  --ir-rule: #e0dbd5;
-  --ir-rule-strong: #c8beb2;
+  --ir-ink-faint: #5b6169;
+  --ir-rule: #817468;
+  --ir-rule-strong: #76695e;
   --ir-accent: #b4520a;
   --ir-accent-strong: #963f00;
   --ir-link: #1a63b8;
@@ -233,13 +233,13 @@ body {
 
   --code-background: var(--ir-code-bg);
   --code-normal: #2b2f36;
-  --code-comment: #6f7780;
+  --code-comment: #565f69;
   --code-function: #1a63b8;
   --code-important: #b42318;
   --code-keyword: #8250df;
   --code-operator: #0550ae;
   --code-property: #1a63b8;
-  --code-punctuation: #6f7780;
+  --code-punctuation: #565f69;
   --code-string: #0f6b30;
   --code-tag: #953800;
   --code-value: #8250df;
@@ -251,7 +251,7 @@ body {
   --table-selection: rgba(180, 82, 10, 0.16);
   --table-selection-border-color: var(--ir-accent);
 
-  --checkbox-border-color: #b3a89c;
+  --checkbox-border-color: #76695e;
   --checkbox-border-color-hover: var(--ir-accent);
   --checkbox-color: #1f8a52;
   --checkbox-color-hover: #17703f;
@@ -483,5 +483,94 @@ input:focus, textarea:focus, select:focus { border-color: var(--ir-accent); box-
 
 /* ---------- reduced motion --------------------------------------------- */
 @media (prefers-reduced-motion: reduce) {
-  * { transition-duration: 0.001ms !important; animation-duration: 0.001ms !important; }
+  body.theme-dark *, body.theme-light *,
+  body.theme-dark *::before, body.theme-light *::before,
+  body.theme-dark *::after, body.theme-light *::after {
+    transition-duration: 0s; animation-duration: 0s;
+    animation-iteration-count: 1; scroll-behavior: auto;
+  }
+}
+
+/* Review records: mode-specific severity inks keep labels readable. */
+.theme-light .callout { --callout-color: 26, 83, 145; }
+.theme-light .callout:is([data-callout="note"], [data-callout="info"], [data-callout="todo"]) { --callout-color: 26, 83, 145; }
+.theme-light .callout:is([data-callout="abstract"], [data-callout="summary"], [data-callout="tldr"], [data-callout="example"]) { --callout-color: 100, 54, 162; }
+.theme-light .callout:is([data-callout="tip"], [data-callout="hint"], [data-callout="success"], [data-callout="check"], [data-callout="done"]) { --callout-color: 24, 101, 62; }
+.theme-light .callout:is([data-callout="question"], [data-callout="help"], [data-callout="faq"], [data-callout="warning"], [data-callout="caution"], [data-callout="attention"], [data-callout="important"]) { --callout-color: 128, 67, 0; }
+.theme-light .callout:is([data-callout="failure"], [data-callout="fail"], [data-callout="missing"], [data-callout="danger"], [data-callout="error"], [data-callout="bug"]) { --callout-color: 161, 33, 38; }
+.theme-dark .callout:is([data-callout="abstract"], [data-callout="summary"], [data-callout="tldr"], [data-callout="example"]) { --callout-color: 193, 158, 245; }
+.theme-dark .callout:is([data-callout="failure"], [data-callout="fail"], [data-callout="missing"], [data-callout="danger"], [data-callout="error"], [data-callout="bug"]) { --callout-color: 255, 135, 139; }
+.callout .callout-content { color: var(--text-normal); }
+
+/* Record hierarchy extends to the editor and the smaller headings. */
+body {
+  --h3-color: var(--ir-ink-muted);
+  --h4-color: var(--ir-ink-muted);
+  --h5-color: var(--ir-ink);
+  --h6-color: var(--ir-ink-muted);
+  --h5-size: 1em;
+  --h6-size: 0.95em;
+  --list-indent: 1.6em;
+  --indentation-guide-color: var(--ir-rule);
+  --indentation-guide-color-active: var(--ir-accent);
+  --embed-border-start: 3px solid var(--ir-accent);
+  --embed-padding: 0.6em 0.9em;
+}
+.markdown-rendered :is(h5, h6),
+.markdown-source-view .cm-line:is(.HyperMD-header-5, .HyperMD-header-6) {
+  font-family: var(--font-monospace-theme);
+  letter-spacing: 0.02em;
+}
+.markdown-source-view .cm-line:is(.HyperMD-header-3, .HyperMD-header-4) {
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+.markdown-rendered li > :is(ul, ol) {
+  margin-inline-start: 0.25em;
+}
+.markdown-embed {
+  border: 1px solid var(--ir-rule);
+  border-inline-start: var(--embed-border-start);
+  border-radius: var(--ir-radius);
+  background: var(--ir-bg-3);
+}
+.markdown-rendered a,
+.markdown-source-view.mod-cm6 .cm-underline {
+  text-decoration-line: underline;
+  text-underline-offset: 0.18em;
+}
+.markdown-rendered a.tag { border-color: var(--ir-accent); }
+.theme-light .markdown-rendered a.tag { border-color: var(--ir-accent); }
+/* An offset ink ring gives keyboard focus a high-contrast edge. */
+body.theme-dark :focus-visible,
+body.theme-light :focus-visible {
+  outline: 2px solid var(--text-normal);
+  outline-offset: 3px;
+  box-shadow: none;
+}
+body :is(input, textarea, select):focus-visible {
+  border-color: var(--ir-accent);
+}
+@media (max-width: 600px) {
+  body { --file-margins: 18px; --table-cell-padding: 6px 8px; }
+  .markdown-rendered h1 { overflow-wrap: anywhere; }
+  .markdown-rendered pre { padding: 0.7em; }
+  .markdown-rendered .table-wrapper { overflow-x: auto; }
+}
+
+/* Keep the editor rail clear of the heading text. */
+.markdown-source-view.mod-cm6 .cm-line.HyperMD-header-2 {
+  padding-inline-start: 0.65em;
+}
+/* Native settings can override the active background independently of text. */
+body .vertical-tab-header-group .vertical-tab-nav-item.is-active,
+body .vertical-tab-nav-item.is-active {
+  background-color: var(--ir-accent);
+  color: var(--text-on-accent);
+}
+/* Show editor focus at the viewport edge, not beside each text column. */
+body.theme-light .cm-content:focus-visible,
+body.theme-dark .cm-content:focus-visible { outline: none; }
+body .cm-editor:has(.cm-content:focus-visible) {
+  box-shadow: inset 0 0 0 2px var(--ir-ink-muted);
 }

@@ -1,0 +1,30 @@
+{
+  "slug": "incident-review",
+  "family": "technical",
+  "useCase": "Incident timelines, postmortems, and on-call notes.",
+  "distinctFeatures": [
+    "Amber section rails and uppercase review headings",
+    "Severity callouts with mode-specific inks, labels, and icons",
+    "Compact zebra tables with tabular numerals",
+    "Monospace timeline markers and small headings",
+    "Bordered evidence embeds"
+  ],
+  "modes": [
+    "light",
+    "dark"
+  ],
+  "contrastTokens": {
+    "normalText": {
+      "foreground": "--text-normal",
+      "background": "--background-primary"
+    },
+    "link": {
+      "foreground": "--link-color",
+      "background": "--background-primary"
+    },
+    "uiFocus": {
+      "foreground": "--text-normal",
+      "background": "--background-primary"
+    }
+  }
+}
