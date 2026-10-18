@@ -86,10 +86,11 @@ The labels stay in the note when you change themes.
 - Severity callouts style existing Obsidian callout types. They do not assign incident severity or add a workflow.
 - The theme uses system fonts. Timestamp widths can differ between operating systems.
 - The native ribbon, tab headers, status bar, and file list were not reached by the Tab trace in Obsidian 1.14.4.
-- The editor shows focus with an ink rail and an amber caret.
+- The editor shows focus with an ink viewport rail and an amber caret.
+- Indent guides are decorative. Markers and nesting carry list structure.
 - Custom CSS snippets can override the focus ring or reduce text contrast.
 
 ## License
 
-[MIT License](LICENSE). Copyright (c) 2026 U3 Theme Factory.
-NoteMods maintains this theme. The original copyright notice remains in LICENSE.
+[MIT License](LICENSE). Copyright (c) 2026 NoteMods.
+NoteMods maintains this theme. 

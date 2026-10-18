@@ -4,7 +4,7 @@
    Typed severity inks identify callouts. Amber rails mark headings and
    navigation accents. Dense zebra tables, monospace timestamps, strong task
    checkboxes, and a high-contrast "on-call" dark mode.
-   Original CSS by U3 Theme Factory. MIT licensed. No remote assets.
+   Original CSS by NoteMods. MIT licensed. No remote assets.
    Requires core variables introduced through Obsidian 1.1 (callout variables).
    ========================================================================== */
 
@@ -311,10 +311,6 @@ body {
 .markdown-preview-view a.external-link:hover { text-decoration: underline; text-underline-offset: 2px; }
 
 /* ---------- lists: timeline-friendly ----------------------------------- */
-.markdown-rendered ul,
-.markdown-preview-view ul { padding-inline-start: var(--list-indent); }
-.markdown-rendered ol,
-.markdown-preview-view ol { padding-inline-start: var(--list-indent); }
 .markdown-rendered ol > li::marker,
 .markdown-preview-view ol > li::marker {
   color: var(--ir-accent);
@@ -565,7 +561,7 @@ body .vertical-tab-nav-item.is-active {
   background-color: var(--ir-accent);
   color: var(--text-on-accent);
 }
-/* Show editor focus at the viewport edge, not beside each text column. */
+/* The viewport edge keeps focus paint clear of note text. */
 body.theme-light .cm-content:focus-visible,
 body.theme-dark .cm-content:focus-visible { outline: none; }
 
@@ -616,10 +612,7 @@ body .markdown-source-view.mod-cm6 .cm-hashtag.cm-hashtag-end {
 }
 body .markdown-source-view.mod-cm6.is-live-preview .HyperMD-quote {
   background: var(--ir-bg-2); color: var(--text-muted);
-}
-body .markdown-source-view.mod-cm6.is-live-preview .HyperMD-quote {
-  box-shadow: inset 4px 0 0 var(--ir-rule-strong);
-  border-radius: 0;
+  box-shadow: inset 4px 0 0 var(--ir-rule-strong); border-radius: 0;
 }
 body .markdown-source-view.mod-cm6.is-live-preview .HyperMD-quote::before { border-inline-start: none; }
 body .markdown-source-view.mod-cm6 .cm-quote { color: var(--text-muted); }
@@ -715,4 +708,42 @@ body .markdown-source-view.mod-cm6 .cm-hmd-indented-code {
 }
 body .markdown-source-view.mod-cm6 .cm-line.HyperMD-header-1 {
   padding-bottom: 0.3em;
+}
+
+/* Reading and Live Preview use one indent per list level. */
+body { --list-marker-color: var(--ir-accent); }
+body .markdown-rendered :is(ul, ol) { padding-inline-start: 0; }
+body .markdown-rendered li > :is(ul, ol) { margin-inline-start: 0; }
+body .markdown-source-view.mod-cm6 .cm-formatting-list-ol {
+  color: var(--ir-accent); font-family: var(--font-monospace-theme); font-weight: 700;
+}
+body .markdown-source-view.mod-cm6 .list-bullet::after { background-color: var(--ir-accent); }
+body .markdown-source-view.mod-cm6 .HyperMD-list-line { --ir-list-level: 0; }
+body .markdown-source-view.mod-cm6 .HyperMD-list-line-2 { --ir-list-level: 1; }
+body .markdown-source-view.mod-cm6 .HyperMD-list-line-3 { --ir-list-level: 2; }
+body .markdown-source-view.mod-cm6 .HyperMD-list-line-4 { --ir-list-level: 3; }
+body .markdown-source-view.mod-cm6 .HyperMD-list-line-5 { --ir-list-level: 4; }
+body .markdown-source-view.mod-cm6 .HyperMD-list-line-6 { --ir-list-level: 5; }
+body .markdown-source-view.mod-cm6 .HyperMD-list-line-7 { --ir-list-level: 6; }
+body .markdown-source-view.mod-cm6 .HyperMD-list-line-8 { --ir-list-level: 7; }
+body .markdown-source-view.mod-cm6 .HyperMD-list-line > .cm-hmd-list-indent {
+  min-width: calc(var(--list-indent) * var(--ir-list-level));
+}
+
+/* Guides are decorative. Markers and nesting carry list structure. */
+body.theme-light { --indentation-guide-color: rgba(129, 116, 104, 0.35); }
+body.theme-dark { --indentation-guide-color: rgba(116, 125, 137, 0.35); }
+body.theme-light .callout:is([data-callout="question"], [data-callout="help"], [data-callout="faq"]) {
+  --callout-color: 36, 98, 120;
+}
+body.theme-light .callout[data-callout="bug"] { --callout-color: 139, 41, 102; }
+body.theme-dark .callout[data-callout="bug"] { --callout-color: 238, 155, 200; }
+.callout[data-callout="bug"] { border-top: 2px dotted rgb(var(--callout-color)); }
+/* Ordered markers reserve the same leading space as Live Preview. */
+body .markdown-rendered ol { padding-inline-start: calc(var(--list-indent) * 0.5); }
+body .markdown-rendered li > ol { padding-inline-start: 0; }
+/* Plain indented code stays unframed in both views. */
+body .markdown-preview-view pre:not([class]), body .markdown-preview-view pre[class=""] {
+  background: transparent; border: none; border-radius: 0; box-shadow: none;
+  padding: 0; padding-inline-start: var(--list-indent);
 }
